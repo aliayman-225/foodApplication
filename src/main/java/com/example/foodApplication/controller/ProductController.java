@@ -28,9 +28,9 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/allProducts")
-    public Iterable<Product> showAllProducts()
+    public Iterable<Product> showAllProducts(@RequestParam String category,@RequestParam String token)
     {
-        return ProductServices.showAllProducts();
+        return ProductServices.showAllProducts(category,token);
     }
 
 

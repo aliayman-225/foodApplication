@@ -19,6 +19,7 @@ public class ProductServices {
     }
 
 
+
     public static boolean addProducts(Product addedProduct) {
             productRepo.save(addedProduct);
             return true;
@@ -34,10 +35,7 @@ public class ProductServices {
         //return false;
     }
 
-    public static Iterable<Product> showAllProducts() {
-        Iterable<Product> allproducts =productRepo.findAll();
-        return allproducts;
-
-
+    public static Iterable<Product> showAllProducts(String token,String category) {
+         return productRepo.findAllByCategory(category);
     }
 }

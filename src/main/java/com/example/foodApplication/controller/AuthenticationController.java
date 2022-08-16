@@ -18,6 +18,12 @@ public class AuthenticationController {
         return authenticationServices.signUP(addedUser);
     }
 
+    @PostMapping(value = "/register")
+    public boolean  signup2(@RequestBody User addedUser)
+    {
+        return authenticationServices.signup(addedUser);
+    }
+
 
    @RequestMapping(value = "/login")
     public ResponseEntity<?>  login(@RequestParam String email,@RequestParam String password)

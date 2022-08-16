@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface ProductRepo extends CrudRepository<Product,Long> {
 
+    public Iterable<Product> findAllByCategory(String category);
 }

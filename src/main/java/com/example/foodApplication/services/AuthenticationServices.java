@@ -35,6 +35,7 @@ public class AuthenticationServices {
     JwtUtils jwtUtils;
 
 
+
     public ResponseEntity<?> signUP(User user) {
         if (userRepo.findByEmail(user.getEmail())!=null) {
             throw new TakenEmailException();
@@ -43,6 +44,16 @@ public class AuthenticationServices {
                 encoder.encode(user.getPassword()), null);
         userRepo.save(encryptedUser);
         return ResponseEntity.ok(("User registered successfully"));
+    }
+
+    public boolean signup(User user) {
+        if (userRepo.findByEmail(user.getEmail())!=null) {
+            return false;
+        }
+        User encryptedUser = new User(user.getEmail(), user.getUsername(),
+                encoder.encode(user.getPassword()), null);
+        userRepo.save(encryptedUser);
+        return true;
     }
 
         public ResponseEntity<?> signIn(String email, String password) {
