@@ -14,7 +14,7 @@
 	<name>foodApplication</name>
 	<description>e-commercial food application</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -59,7 +59,7 @@
 			<artifactId>postgresql</artifactId>
 			<version>42.4.1</version>
 		</dependency>
-		
+
 
 
 
