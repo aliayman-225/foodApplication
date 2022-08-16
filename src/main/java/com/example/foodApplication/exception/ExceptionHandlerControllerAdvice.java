@@ -12,10 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ExceptionHandlerControllerAdvice {
 
-    @ExceptionHandler(EmployeeNotFoundException.class)
+    @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public @ResponseBody ErrorResponse handleResourceNotFound(final EmployeeNotFoundException exception, final HttpServletRequest request){
+    public @ResponseBody ErrorResponse handleResourceNotFound(final UserNotFoundException exception, final HttpServletRequest request){
 
         return new ErrorResponse(Errors.INCORRECT_EMAIL_OR_PASSWORD.getMessage(), Errors.INCORRECT_EMAIL_OR_PASSWORD.getCode());
     }
+
+
+    @ExceptionHandler(TakenEmailException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public @ResponseBody ErrorResponse handleTakenEmail(final TakenEmailException exception, final HttpServletRequest request){
+
+        return new ErrorResponse(Errors.REGISTER_WITH_TAKEN_EMAIL.getMessage(), Errors.REGISTER_WITH_TAKEN_EMAIL.getCode());
+    }
 }
+
