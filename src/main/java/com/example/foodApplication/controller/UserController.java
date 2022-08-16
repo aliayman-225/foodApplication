@@ -3,6 +3,7 @@ package com.example.foodApplication.controller;
 import com.example.foodApplication.Entity.User;
 import com.example.foodApplication.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,9 +21,9 @@ public class UserController {
 
 
     @RequestMapping(value = "/login")
-    public boolean login(@RequestParam String email, @RequestParam String password)
+    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password)
     {
-        return UserServices.logIn(email,password);
+        return UserServices.findByEmailAndPassword(email,password);
     }
 
 }

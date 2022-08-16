@@ -1,8 +1,16 @@
 package com.example.foodApplication.services;
 
 import com.example.foodApplication.Entity.User;
+import com.example.foodApplication.Entitydto.Userdto;
 import com.example.foodApplication.Repo.UserRepo;
+import com.example.foodApplication.exception.EmployeeNotFoundException;
+import com.example.foodApplication.exception.ErrorResponse;
+import com.example.foodApplication.exception.Errors;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -26,16 +34,24 @@ public class UserServices {
         return false;
     }
 
+
+    public static ResponseEntity<?> findByEmailAndPassword(String email,String password)//work
+    {
+        User scopedUser=userRepo.findByEmailAndPassword(email,password);
+        if(scopedUser==null)
+            throw new EmployeeNotFoundException();
+        Userdto scopedUserdto=new Userdto();
+        BeanUtils.copyProperties(scopedUser,scopedUserdto);
+        return new ResponseEntity<>(scopedUserdto, HttpStatus.OK);
+    }
+
     public static boolean logIn(String email,String password) {
         Optional<User> user=userRepo.findById(email);
-        if(!user.isEmpty() &&password.equals(user.get().getPassword()))
+        if(!user.isPresent() &&password.equals(user.get().getPassword()))//
         {
             return true;
         }
         return false;
     }
-
-
-
 
 }

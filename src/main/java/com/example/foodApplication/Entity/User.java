@@ -23,5 +23,10 @@ public class User {
     private String username;
     @Column(name="password",length = 50,nullable = false)
     private String password;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Product> products = new java.util.ArrayList<>();
+
+
+
 
 }

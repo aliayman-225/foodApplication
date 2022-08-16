@@ -24,13 +24,14 @@ public class ProductServices {
             return true;
     }
     public static boolean deleteProduct(Long id) {
-        Optional<Product> product=productRepo.findById(id);
-        if(!product.isEmpty())
-        {
-            productRepo.delete(product.get());
+       // Optional<Product> product=productRepo.findById(id);
+        productRepo.deleteById(id);
+        //if(!product.isEmpty())
+        //{
+          //  productRepo.delete(product.get());
             return true;
-        }
-        return false;
+        //}
+        //return false;
     }
 
     public static Iterable<Product> showAllProducts() {
