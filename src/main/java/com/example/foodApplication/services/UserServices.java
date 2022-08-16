@@ -26,7 +26,7 @@ public class UserServices {
     }
 
     public static boolean createNewUser(User addedUser) {
-        if(userRepo.findById(addedUser.getEmail()).isPresent())
+        if(!userRepo.findById(addedUser.getEmail()).isPresent())
         {
             userRepo.save(addedUser);
             return true;
