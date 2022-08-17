@@ -1,8 +1,11 @@
 package com.example.foodApplication.controller;
 
+import com.example.foodApplication.JWT.AuthTokenFilter;
+import com.example.foodApplication.JWT.JwtUtils;
 import com.example.foodApplication.services.ProductServices;
 import com.example.foodApplication.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -13,10 +16,14 @@ public class UserController {
     @Autowired
     private UserServices userServices;
 
-    @RequestMapping(value = "/hi")
-    public boolean deleteProduct()
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    @PostMapping (value = "/UpdateProfile")
+    public ResponseEntity<?> updateProfile(@RequestParam String newEmail, @RequestParam String newUsername, @RequestParam String newPassword, @RequestHeader String Authorization)
     {
-        return userServices.updateProfile("s","s","s");
+        return userServices.updateProfile(newEmail,newUsername,newPassword,Authorization);
+
     }
 
 }

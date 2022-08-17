@@ -2,15 +2,13 @@ package com.example.foodApplication.services;
 
 import com.example.foodApplication.Entity.User;
 import com.example.foodApplication.Entitydto.CustomUser;
-import com.example.foodApplication.Entitydto.Userdto;
-import com.example.foodApplication.JWT.AuthTokenFilter;
 import com.example.foodApplication.Repo.UserRepo;
-import com.example.foodApplication.exception.TakenEmailException;
-import com.example.foodApplication.exception.UserNotFoundException;
-import org.springframework.beans.BeanUtils;
+import com.example.foodApplication.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,9 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.foodApplication.JWT.JwtUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RequestHeader;
-
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,14 +30,15 @@ public class UserServices implements UserDetailsService {
     private PasswordEncoder encoder;
     @Autowired
     private JwtUtils jwtUtils;
-    /*@Autowired
-    private AuthTokenFilter authTokenFilter;*/
-
     @Autowired
     public UserServices(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
+    @Autowired
+    AuthenticationManager authenticationManager;
 
+    @Autowired
+    AuthenticationServices authenticationServices;
 
     /**
      * @param email takes user email for authentication check
@@ -56,7 +52,6 @@ public class UserServices implements UserDetailsService {
             throw new UsernameNotFoundException("Incorrect email or password");
         return new CustomUser(user.getEmail(),user.getUsername(),user.getPassword(),true,true,true,true,mapToGrantedAuthorities());
     }
-
 
     /**
      * @return list of user authorities
@@ -74,13 +69,31 @@ public class UserServices implements UserDetailsService {
        return userRepo.findByEmail(email);
     }
 
-    public boolean updateProfile(String email, String username, String password)
+    public ResponseEntity<?> updateProfile(String newEmail, String newUsername, String newPassword, String token)
     {
-        if(userRepo.findByEmail(email)==null)
+        if(!authenticationServices.emailValidate(newEmail))
+            throw new InvalidEmailStructure();
+        if(!authenticationServices.passwordValidate(newPassword))
+            throw new InvalidPasswordStructure();
+        if(userRepo.findByEmail(newEmail)==null || newEmail.equals(jwtUtils.getUserNameFromJwtToken(token)))
         {
 
+            if(jwtUtils.validateJwtToken(token))
+            {
+                String oldemail= jwtUtils.getUserNameFromJwtToken(token);
+                User user = userRepo.findByEmail(oldemail);
+                User encryptedUser = new User(newEmail, newUsername,
+                        encoder.encode(newPassword), null);
+                userRepo.deleteById(user.getEmail());
+                userRepo.save(encryptedUser);
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(newEmail, newPassword));
+                String jwt = jwtUtils.generateJwtToken(authentication);
+                return ResponseEntity.ok().header("Authorization", jwt).body("Successfully updated");
+            }else
+                throw new InvalidTokenException();
         }
-        return true;
-    }
+        throw new TakenEmailException();
 
+    }
 }

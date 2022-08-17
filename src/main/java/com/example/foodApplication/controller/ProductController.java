@@ -3,6 +3,7 @@ package com.example.foodApplication.controller;
 import com.example.foodApplication.Entity.Product;
 import com.example.foodApplication.services.ProductServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -14,22 +15,21 @@ public class ProductController {
     private ProductServices productServices;
 
     @PostMapping(value = "/addProducts")
-    public boolean addProduct(@RequestBody Product addedProduct,@RequestParam String token)
+    public boolean addProduct(@RequestBody Product addedProduct,@RequestHeader String token)
     {
         return productServices.addProducts(addedProduct,token);
     }
 
     @DeleteMapping(value = "/deleteProducts")
-    public boolean deleteProduct(@RequestParam Long id)
+    public ResponseEntity<?>  deleteProduct(@RequestParam Long id,@RequestHeader String Authorization)
     {
-        return ProductServices.deleteProduct(id);
+        return productServices.deleteProduct(id,Authorization);
     }
 
     @RequestMapping(value = "/allProducts")
-    public Iterable<Product> showAllProducts(@RequestParam String category,@RequestParam String token)
+    public ResponseEntity<?> showAllProducts(@RequestParam String category, @RequestHeader String Authorization)
     {
-
-        return productServices.showAllProducts(category,token);
+        return productServices.showAllProducts(category,Authorization);
     }
 
 

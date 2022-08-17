@@ -3,7 +3,10 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import com.example.foodApplication.Entitydto.CustomUser;
@@ -27,13 +30,22 @@ public class JwtUtils {
      */
     @Value("${auth.jwtExpirationMs}")
     private int jwtExpirationMs;
-
+    /*@Autowired
+    AuthenticationManager authenticationManager;*/
     /**
      * Generting token for the user with a specific algorithm that makes an encrypted string contains subject and el expiration date
-     * @param authentication
+     * @param
      * @return the token that the user use it for accessing apis
      */
+    /*public String prepareToken(String email,String password)
+    {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password));
+        return  generateJwtToken(authentication);
+
+    }*/
     public String generateJwtToken(Authentication authentication) {
+
         CustomUser userPrincipal = (CustomUser) authentication.getPrincipal();
         return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret)

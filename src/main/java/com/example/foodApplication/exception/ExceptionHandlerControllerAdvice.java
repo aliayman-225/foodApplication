@@ -55,6 +55,13 @@ public class ExceptionHandlerControllerAdvice {
         return new ErrorResponse(Errors.INVALID_PASSWORD_STRUCTURE.getMessage(), Errors.INVALID_PASSWORD_STRUCTURE.getCode());
     }
 
+    @ExceptionHandler(InvalidProductIDException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public @ResponseBody ErrorResponse handleInvalidProductIDException(final InvalidProductIDException exception, final HttpServletRequest request){
+
+        return new ErrorResponse(Errors.INVALID_PRODUCT_ID.getMessage(), Errors.INVALID_PRODUCT_ID.getCode());
+    }
+
 
 }
 

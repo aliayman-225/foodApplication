@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/Home")
@@ -26,7 +28,7 @@ public class AuthenticationController {
 
 
    @RequestMapping(value = "/login")
-    public ResponseEntity<?>  login(@RequestParam String email,@RequestParam String password)
+    public ResponseEntity<?>  login(@RequestParam String email, @RequestParam String password, HttpServletResponse response)
     {
         return authenticationServices.signIn(email,password);
     }

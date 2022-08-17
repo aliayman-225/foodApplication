@@ -43,14 +43,19 @@ public class AuthenticationServices {
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private static final Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}$");
-    public static boolean emailValidate(String emailStr) {
+    public  boolean emailValidate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
     }
-    public static boolean passwordValidate(final String password) {
+    public  boolean passwordValidate(final String password) {
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
+
+    /*public String  generatingToken(String email,String password) {
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }*/
 
     public ResponseEntity<?> signUP(User user) {
         if(!emailValidate(user.getEmail()))
@@ -87,11 +92,13 @@ public class AuthenticationServices {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtUtils.generateJwtToken(authentication);
             CustomUser userDetails = (CustomUser) authentication.getPrincipal();
-            return ResponseEntity.ok(new Userdto(userDetails.getUsername(),userDetails.getUserName(), jwt));
+
+            return ResponseEntity.ok().header("Authorization", jwt).body(new Userdto(userDetails.getUsername(),userDetails.getUserName(), jwt));
 
         }
         catch (Exception e)
             {
+                System.out.println(e);
                 throw new UserNotFoundException();
             }
     }
