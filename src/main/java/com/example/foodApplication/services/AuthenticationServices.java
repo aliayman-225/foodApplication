@@ -88,12 +88,10 @@ public class AuthenticationServices {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password));
 
-
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtUtils.generateJwtToken(authentication);
             CustomUser userDetails = (CustomUser) authentication.getPrincipal();
-
-            return ResponseEntity.ok().header("Authorization", jwt).body(new Userdto(userDetails.getUsername(),userDetails.getUserName(), jwt));
+            return ResponseEntity.ok().header("Authorization", jwt).build();
 
         }
         catch (Exception e)
