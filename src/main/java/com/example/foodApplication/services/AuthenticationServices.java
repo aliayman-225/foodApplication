@@ -91,7 +91,8 @@ public class AuthenticationServices {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtUtils.generateJwtToken(authentication);
             CustomUser userDetails = (CustomUser) authentication.getPrincipal();
-            return ResponseEntity.ok().header("Authorization", jwt).build();
+
+            return ResponseEntity.ok().header("Authorization", jwt).body(new Userdto(userDetails.getUsername(),userDetails.getUserName()));
 
         }
         catch (Exception e)
