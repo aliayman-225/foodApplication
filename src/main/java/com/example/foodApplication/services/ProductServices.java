@@ -29,7 +29,10 @@ public class ProductServices {
         try
         {
             if(jwtUtils.validateJwtToken(token))
+            {
                 productRepo.save(addedProduct);
+                return true;
+            }
         }
         catch (Exception e){
             throw new InvalidTokenException();
