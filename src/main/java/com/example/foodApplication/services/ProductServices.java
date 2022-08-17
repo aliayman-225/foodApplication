@@ -25,24 +25,31 @@ public class ProductServices {
 
 
 
-    public static boolean addProducts(Product addedProduct) {
-            productRepo.save(addedProduct);
-            return true;
+    public  boolean addProducts(Product addedProduct,String token) {
+        try
+        {
+            if(jwtUtils.validateJwtToken(token))
+                productRepo.save(addedProduct);
+        }
+        catch (Exception e){
+            throw new InvalidTokenException();
+        }
+        throw new InvalidTokenException();
     }
     public static boolean deleteProduct(Long id) {
-       // Optional<Product> product=productRepo.findById(id);
         productRepo.deleteById(id);
-        //if(!product.isEmpty())
-        //{
-          //  productRepo.delete(product.get());
             return true;
-        //}
-        //return false;
     }
 
     public  List<Product> showAllProducts(String category,String token) {
-        if(jwtUtils.validateJwtToken(token))
-            return productRepo.findByCategoryIgnoreCase(category);
+        try
+        {
+            if(jwtUtils.validateJwtToken(token))
+                return productRepo.findByCategoryIgnoreCase(category);
+        }
+        catch (Exception e){
+            throw new InvalidTokenException();
+        }
         throw new InvalidTokenException();
     }
 }

@@ -14,9 +14,9 @@ public class ProductController {
     private ProductServices productServices;
 
     @PostMapping(value = "/addProducts")
-    public boolean addProduct(@RequestBody Product addedProduct)
+    public boolean addProduct(@RequestBody Product addedProduct,@RequestParam String token)
     {
-        return ProductServices.addProducts(addedProduct);
+        return productServices.addProducts(addedProduct,token);
     }
 
     @DeleteMapping(value = "/deleteProducts")
