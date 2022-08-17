@@ -45,7 +45,7 @@ public class ProductServices {
                 String email= jwtUtils.getUserNameFromJwtToken(token);
                 String jwt = jwtUtils.generateJwtTokenFromEmail(email);
                 productRepo.save(addedProduct);
-                return ResponseEntity.ok().header("Authorization", jwt).build();
+                return ResponseEntity.ok().header("Authorization", jwt).body("Added successfully");
             }
         }
         catch (Exception e){
@@ -89,4 +89,24 @@ public class ProductServices {
         }
         throw new InvalidTokenException();
     }
+
+
+    public  ResponseEntity<?> showAllFoodProducts(String token) {
+        try
+        {
+            if(jwtUtils.validateJwtToken(token))
+            {
+                String email=jwtUtils.getUserNameFromJwtToken(token);
+                String jwt = jwtUtils.generateJwtTokenFromEmail (email);
+                return ResponseEntity.ok().header("Authorization", jwt).body(productRepo.findAll());
+            }
+        }
+        catch (Exception e){
+            throw new InvalidTokenException();
+        }
+        throw new InvalidTokenException();
+    }
+
+
+
 }
