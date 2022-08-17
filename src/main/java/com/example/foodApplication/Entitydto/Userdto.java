@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Data // getter+setter+NoargsConstructor
-@AllArgsConstructor //constructor to all attributes
+@Data
+@AllArgsConstructor
 @ToString
 @NoArgsConstructor
 public class Userdto {

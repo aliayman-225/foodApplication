@@ -2,8 +2,8 @@ package com.example.foodApplication.Entitydto;
 
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.GrantedAuthority;
-
 import java.util.Collection;
+
 
 public class CustomUser extends User {
     public String getUserName() {

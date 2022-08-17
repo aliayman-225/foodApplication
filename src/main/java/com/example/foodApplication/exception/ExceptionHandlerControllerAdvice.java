@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Controls all the errors as generating the status and the error msg in he body
+ */
 @ControllerAdvice
 public class ExceptionHandlerControllerAdvice {
 
@@ -43,5 +46,15 @@ public class ExceptionHandlerControllerAdvice {
 
         return new ErrorResponse(Errors.INVALID_EMAIL_STRUCTURE.getMessage(), Errors.INVALID_EMAIL_STRUCTURE.getCode());
     }
+
+
+    @ExceptionHandler(InvalidPasswordStructure.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public @ResponseBody ErrorResponse handleInvalidPasswordStructure(final InvalidPasswordStructure exception, final HttpServletRequest request){
+
+        return new ErrorResponse(Errors.INVALID_PASSWORD_STRUCTURE.getMessage(), Errors.INVALID_PASSWORD_STRUCTURE.getCode());
+    }
+
+
 }
 

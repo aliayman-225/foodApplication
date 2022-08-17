@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductServices {
@@ -41,9 +40,9 @@ public class ProductServices {
         //return false;
     }
 
-    public  Iterable<Product> showAllProducts(String category,String token) {
+    public  List<Product> showAllProducts(String category,String token) {
         if(jwtUtils.validateJwtToken(token))
-            return productRepo.findAllByCategory(category);
+            return productRepo.findByCategory(category);
         throw new InvalidTokenException();
     }
 }

@@ -3,8 +3,8 @@ package com.example.foodApplication.exception;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Data // getter+setter+NoargsConstructor
-@AllArgsConstructor //constructor to all attributes
+@Data
+@AllArgsConstructor
 public class ErrorResponse {
     private String errorMessage;
     private String errorCode;

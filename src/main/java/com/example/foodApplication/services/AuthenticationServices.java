@@ -6,6 +6,7 @@ import com.example.foodApplication.Entitydto.Userdto;
 import com.example.foodApplication.JWT.JwtUtils;
 import com.example.foodApplication.Repo.UserRepo;
 import com.example.foodApplication.exception.InvalidEmailStructure;
+import com.example.foodApplication.exception.InvalidPasswordStructure;
 import com.example.foodApplication.exception.TakenEmailException;
 import com.example.foodApplication.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,17 +41,23 @@ public class AuthenticationServices {
 
 
 
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
-    public static boolean validate(String emailStr) {
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}$");
+    public static boolean emailValidate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
     }
+    public static boolean passwordValidate(final String password) {
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
 
     public ResponseEntity<?> signUP(User user) {
-        if(!validate(user.getEmail()))
+        if(!emailValidate(user.getEmail()))
             throw new InvalidEmailStructure();
+        if(!passwordValidate(user.getPassword()))
+            throw new InvalidPasswordStructure();
+
 
         if (userRepo.findByEmail(user.getEmail())!=null) {
             throw new TakenEmailException();

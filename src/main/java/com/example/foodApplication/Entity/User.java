@@ -6,8 +6,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.List;
 
-@Data // getter+setter+NoargsConstructor
-@AllArgsConstructor //constructor to all attributes
+@Data
+@AllArgsConstructor
 @ToString
 @NoArgsConstructor
 @Entity(name = "Customer")

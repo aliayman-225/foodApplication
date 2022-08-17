@@ -6,9 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
 import com.example.foodApplication.Entitydto.CustomUser;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -16,22 +14,45 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
+/**
+ * utilities for authenticated users
+ */
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
-    @Value("${product.app.jwtSecret}")
+    @Value("${auth.jwtSecret}")
     private String jwtSecret;
-    @Value("${product.app.jwtExpirationMs}")
+    /**
+     * Expiration date of the token by milli second
+     */
+    @Value("${auth.jwtExpirationMs}")
     private int jwtExpirationMs;
+
+    /**
+     * Generting token for the user with a specific algorithm that makes an encrypted string contains subject and el expiration date
+     * @param authentication
+     * @return the token that the user use it for accessing apis
+     */
     public String generateJwtToken(Authentication authentication) {
         CustomUser userPrincipal = (CustomUser) authentication.getPrincipal();
         return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
+
+    /**
+     * @param token
+     * @return The user that belong to this token
+     */
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
+
+    /**
+     * function checks for authentication of the given token
+     * @param authToken
+     * @return if the token still valid or not
+     */
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
