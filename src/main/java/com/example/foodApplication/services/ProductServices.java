@@ -42,7 +42,7 @@ public class ProductServices {
 
     public  List<Product> showAllProducts(String category,String token) {
         if(jwtUtils.validateJwtToken(token))
-            return productRepo.findByCategory(category);
+            return productRepo.findByCategoryIgnoreCase(category);
         throw new InvalidTokenException();
     }
 }

@@ -11,5 +11,5 @@ import java.util.Optional;
 @Repository
 public interface ProductRepo extends CrudRepository<Product,Long> {
 
-    public List<Product> findByCategory(String category);
+    public List<Product> findByCategoryIgnoreCase(String category);
 }
