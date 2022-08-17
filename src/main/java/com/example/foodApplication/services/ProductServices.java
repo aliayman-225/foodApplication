@@ -91,20 +91,21 @@ public class ProductServices {
     }
 
 
-    public  ResponseEntity<?> showAllFoodProducts(String token) {
+    public  ResponseEntity<?> showAllFoodProducts() {
         try
         {
-            if(jwtUtils.validateJwtToken(token))
+           /* if(jwtUtils.validateJwtToken(token))
             {
                 String email=jwtUtils.getUserNameFromJwtToken(token);
                 String jwt = jwtUtils.generateJwtTokenFromEmail (email);
                 return ResponseEntity.ok().header("Authorization", jwt).body(productRepo.findAll());
-            }
+            }*/
+            return ResponseEntity.ok(productRepo.findAll());
         }
         catch (Exception e){
             throw new InvalidTokenException();
         }
-        throw new InvalidTokenException();
+      //  throw new InvalidTokenException();
     }
 
 
