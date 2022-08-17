@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,13 +37,15 @@ public class ProductServices {
 
 
 
-    public  boolean addProducts(Product addedProduct,String token) {//
+    public  ResponseEntity<?> addProducts(Product addedProduct,String token) {//
         try
         {
             if(jwtUtils.validateJwtToken(token))
             {
+                String email= jwtUtils.getUserNameFromJwtToken(token);
+                String jwt = jwtUtils.generateJwtTokenFromEmail(email);
                 productRepo.save(addedProduct);
-                return true;
+                return ResponseEntity.ok().header("Authorization", jwt).build();
             }
         }
         catch (Exception e){
@@ -52,17 +55,12 @@ public class ProductServices {
     }
     public  ResponseEntity<?>  deleteProduct(Long id,String token) {//
 
-
         try
         {
             if(jwtUtils.validateJwtToken(token))
             {
-                System.out.println("sd");
                 String email= jwtUtils.getUserNameFromJwtToken(token);
-                String password = userServices.findByEmail(email).getPassword();
-                Authentication authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(email, password));
-                String jwt = jwtUtils.generateJwtToken(authentication);
+                String jwt = jwtUtils.generateJwtTokenFromEmail(email);
                 if(!productRepo.existsById(id))
                     throw new InvalidProductIDException();
                 productRepo.deleteById(id);
@@ -70,7 +68,6 @@ public class ProductServices {
             }
         }
         catch (Exception e){
-            System.out.println(e);
             throw new InvalidTokenException();
         }
         throw new InvalidTokenException();
@@ -83,10 +80,7 @@ public class ProductServices {
             if(jwtUtils.validateJwtToken(token))
             {
                 String email=jwtUtils.getUserNameFromJwtToken(token);
-                String password = userServices.findByEmail(email).getPassword();
-                Authentication authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(email, password));
-                String jwt = jwtUtils.generateJwtToken(authentication);
+                String jwt = jwtUtils.generateJwtTokenFromEmail (email);
                 return ResponseEntity.ok().header("Authorization", jwt).body(productRepo.findByCategoryIgnoreCase(category));
             }
         }
