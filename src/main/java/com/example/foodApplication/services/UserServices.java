@@ -65,15 +65,7 @@ public class UserServices implements UserDetailsService {
     PasswordEncoder encoder;
     @Autowired
     JwtUtils jwtUtils;
-    /*public static boolean createNewUser(User addedUser) {
-        if(!userRepo.findById(addedUser.getEmail()).isPresent())
-        {
-            userRepo.save(addedUser);
-            return true;
-        }
-        throw new TakenEmailException();
-        //return false;
-    }*/
+
 
     public  User createNewUser(User addedUser) {
         if(addedUser!=null)

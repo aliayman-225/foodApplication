@@ -5,15 +5,13 @@ import com.example.foodApplication.services.ProductServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/Home")
 public class ProductController {
 
-    @Autowired // btrbot bl @service el mawgooda f class EmployeeService
-    private ProductServices userServices;
+    @Autowired
+    private ProductServices productServices;
 
     @PostMapping(value = "/addProducts")
     public boolean addProduct(@RequestBody Product addedProduct)
@@ -21,7 +19,7 @@ public class ProductController {
         return ProductServices.addProducts(addedProduct);
     }
 
-    @PostMapping(value = "/deleteProducts")
+    @DeleteMapping(value = "/deleteProducts")
     public boolean deleteProduct(@RequestParam Long id)
     {
         return ProductServices.deleteProduct(id);
@@ -30,7 +28,8 @@ public class ProductController {
     @RequestMapping(value = "/allProducts")
     public Iterable<Product> showAllProducts(@RequestParam String category,@RequestParam String token)
     {
-        return ProductServices.showAllProducts(category,token);
+
+        return productServices.showAllProducts(category,token);
     }
 
 

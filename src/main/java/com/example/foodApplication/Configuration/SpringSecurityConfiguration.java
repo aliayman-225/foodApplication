@@ -1,16 +1,16 @@
 package com.example.foodApplication.Configuration;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.context.annotation.Bean;
-        import org.springframework.context.annotation.ComponentScan;
-        import org.springframework.context.annotation.Configuration;
-        import org.springframework.security.authentication.AuthenticationManager;
-        import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-        import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-        import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-        import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-        import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-        import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-        import com.example.foodApplication.services.UserServices;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.example.foodApplication.services.UserServices;
 
 @SuppressWarnings("deprecation")
 @ComponentScan("com.example.foodApplication.*")
@@ -21,6 +21,9 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserServices userService;
+
+    @Autowired
+    private BCryptPasswordEncoder bcryptPasswordEncoder;
 
 
     private static final String[] AUTH_WHITELIST = {
@@ -41,12 +44,6 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
             // other public endpoints of your API may be appended to this array
     };
 
-    /*@Bean
-    @Override
-    public AuthenticationManager authenticationManagerbean() throws Exception{
-        return super.authenticationManager();
-
-    }*/
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -59,8 +56,6 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated().and().httpBasic();
     }
 
-    @Autowired
-    private BCryptPasswordEncoder bcryptPasswordEncoder;
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {

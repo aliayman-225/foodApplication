@@ -5,6 +5,7 @@ import com.example.foodApplication.Entitydto.CustomUser;
 import com.example.foodApplication.Entitydto.Userdto;
 import com.example.foodApplication.JWT.JwtUtils;
 import com.example.foodApplication.Repo.UserRepo;
+import com.example.foodApplication.exception.InvalidEmailStructure;
 import com.example.foodApplication.exception.TakenEmailException;
 import com.example.foodApplication.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class AuthenticationServices {
@@ -36,7 +40,18 @@ public class AuthenticationServices {
 
 
 
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
+
     public ResponseEntity<?> signUP(User user) {
+        if(!validate(user.getEmail()))
+            throw new InvalidEmailStructure();
+
         if (userRepo.findByEmail(user.getEmail())!=null) {
             throw new TakenEmailException();
         }
@@ -65,7 +80,7 @@ public class AuthenticationServices {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtUtils.generateJwtToken(authentication);
             CustomUser userDetails = (CustomUser) authentication.getPrincipal();
-            return ResponseEntity.ok(new Userdto(userDetails.getUserName(), userDetails.getUsername(), jwt));
+            return ResponseEntity.ok(new Userdto(userDetails.getUsername(),userDetails.getUserName(), jwt));
 
         }
         catch (Exception e)

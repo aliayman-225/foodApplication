@@ -26,5 +26,22 @@ public class ExceptionHandlerControllerAdvice {
 
         return new ErrorResponse(Errors.REGISTER_WITH_TAKEN_EMAIL.getMessage(), Errors.REGISTER_WITH_TAKEN_EMAIL.getCode());
     }
+
+
+
+    @ExceptionHandler(InvalidTokenException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public @ResponseBody ErrorResponse handleInvalidToken(final InvalidTokenException exception, final HttpServletRequest request){
+
+        return new ErrorResponse(Errors.INVALID_TOKEN.getMessage(), Errors.INVALID_TOKEN.getCode());
+    }
+
+
+    @ExceptionHandler(InvalidEmailStructure.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public @ResponseBody ErrorResponse handleInvalidEmailStructure(final InvalidEmailStructure exception, final HttpServletRequest request){
+
+        return new ErrorResponse(Errors.INVALID_EMAIL_STRUCTURE.getMessage(), Errors.INVALID_EMAIL_STRUCTURE.getCode());
+    }
 }
 

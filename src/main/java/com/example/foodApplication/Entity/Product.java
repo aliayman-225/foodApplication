@@ -31,8 +31,5 @@ public class Product {
     private int boughtItemsCount;
     @Column(name = "category",nullable = false)
     private String category;
-   // @JoinColumn(name="email")
-    //@ManyToOne
-    //private User user;
 
 }

@@ -2,7 +2,9 @@ package com.example.foodApplication.services;
 
 
 import com.example.foodApplication.Entity.Product;
+import com.example.foodApplication.JWT.JwtUtils;
 import com.example.foodApplication.Repo.ProductRepo;
+import com.example.foodApplication.exception.InvalidTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +16,13 @@ public class ProductServices {
     static ProductRepo productRepo;
 
     @Autowired
+    JwtUtils jwtUtils;
+
+    @Autowired
     public ProductServices(ProductRepo productRepo) {
         this.productRepo = productRepo;
     }
+
 
 
 
@@ -35,7 +41,9 @@ public class ProductServices {
         //return false;
     }
 
-    public static Iterable<Product> showAllProducts(String token,String category) {
-         return productRepo.findAllByCategory(category);
+    public  Iterable<Product> showAllProducts(String category,String token) {
+        if(jwtUtils.validateJwtToken(token))
+            return productRepo.findAllByCategory(category);
+        throw new InvalidTokenException();
     }
 }
