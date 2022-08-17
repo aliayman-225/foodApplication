@@ -11,5 +11,5 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Userdto {
 
-    private String email,username;
+    private String email,username,jwt;
 }

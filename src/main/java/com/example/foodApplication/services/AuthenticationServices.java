@@ -92,7 +92,7 @@ public class AuthenticationServices {
             String jwt = jwtUtils.generateJwtToken(authentication);
             CustomUser userDetails = (CustomUser) authentication.getPrincipal();
 
-            return ResponseEntity.ok().header("Authorization", jwt).body(new Userdto(userDetails.getUsername(),userDetails.getUserName()));
+            return ResponseEntity.ok().header("Authorization", jwt).body(new Userdto(userDetails.getUsername(),userDetails.getUserName(),jwt));
 
         }
         catch (Exception e)
