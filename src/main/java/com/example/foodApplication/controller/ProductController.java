@@ -15,7 +15,7 @@ public class ProductController {
     private ProductServices productServices;
 
     @PostMapping(value = "/addProducts")
-    public boolean addProduct(@RequestBody Product addedProduct,@RequestHeader String token)
+    public boolean addProduct(@RequestBody Product addedProduct,@RequestHeader String Authorization)
     {
         return productServices.addProducts(addedProduct,token);
     }
