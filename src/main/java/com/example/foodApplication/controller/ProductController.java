@@ -33,7 +33,7 @@ public class ProductController {
     }
 
 
-    @RequestMapping(value = "/allFoodProductsssa")
+    @RequestMapping(value = "/allFoodProducts")
     public ResponseEntity<?> showAllFoodProducts(@RequestHeader String Authorization)
     {
         return productServices.showAllFoodProducts(Authorization);
