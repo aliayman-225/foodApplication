@@ -30,6 +30,7 @@ public class UserController {
     @PostMapping (value = "/lolo")
     public ResponseEntity<?> lala(@RequestParam String newEmail, @RequestParam String newUsername, @RequestParam String newPassword, @RequestHeader String Authorization)
     {
+        System.out.println("sd");
         return userServices.updateProfile(newEmail,newUsername,newPassword,Authorization);
 
     }
