@@ -61,7 +61,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
             // -- Swagger UI v3 (OpenAPI)
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/Home/register",
+            "/Home/register",//
             "/Home/Register",
             "/Home/login",
             "/Home/allFoodProductsssa"
