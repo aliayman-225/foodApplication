@@ -69,7 +69,6 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/Home/register",
             "/Home/Register",
             "/Home/login",
-            "/Home/all"
             // other public endpoints of your API may be appended to this array
     };
 
@@ -94,19 +93,11 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     }
 
-
-    /**
-     *
-     * @param auth
-     * @throws Exception
-     */
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(bcryptPasswordEncoder);
 
     }
-
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

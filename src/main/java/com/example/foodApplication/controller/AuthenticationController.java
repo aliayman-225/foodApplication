@@ -27,7 +27,7 @@ public class AuthenticationController {
     }
 
 
-   @RequestMapping(value = "/login")
+   @GetMapping(value = "/login")
     public ResponseEntity<?>  login(@RequestParam String email, @RequestParam String password, HttpServletResponse response)
     {
         return authenticationServices.signIn(email,password);

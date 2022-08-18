@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.stereotype.Component;
 import com.example.foodApplication.Entitydto.CustomUser;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -30,20 +31,12 @@ public class JwtUtils {
      */
     @Value("${auth.jwtExpirationMs}")
     private int jwtExpirationMs;
-    /*@Autowired
-    AuthenticationManager authenticationManager;*/
+
     /**
-     * Generting token for the user with a specific algorithm that makes an encrypted string contains subject and el expiration date
-     * @param
+     * Generting token for the user with a specific algorithm that makes an encrypted string contains subject and expiration date
+     * @param authentication
      * @return the token that the user use it for accessing apis
      */
-    /*public String prepareToken(String email,String password)
-    {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, password));
-        return  generateJwtToken(authentication);
-
-    }*/
     public String generateJwtToken(Authentication authentication) {
 
         CustomUser userPrincipal = (CustomUser) authentication.getPrincipal();
@@ -52,16 +45,17 @@ public class JwtUtils {
                 .compact();
     }
 
-
-
-    public String generateJwtTokenFromEmail( String email) {
-        return generateTokenFromUsername(email);
-    }
-    public String generateTokenFromUsername(String username) {
-        return Jwts.builder().setSubject(username).setIssuedAt(new Date())
+    /**
+     * Generting token for the user with a specific algorithm that makes an encrypted string contains subject and expiration date by email only
+     * @param email
+     * @return the token that the user use it for accessing apis
+     */
+    public String generateJwtTokenFromEmail(String email) {
+        return Jwts.builder().setSubject(email).setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
+
 
 
     /**

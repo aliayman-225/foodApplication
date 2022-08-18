@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Controls all the errors as generating the status and the error msg in he body
+ * Controls all the errors as generating the status and the error msg in the body
  */
 @ControllerAdvice
 public class ExceptionHandlerControllerAdvice {

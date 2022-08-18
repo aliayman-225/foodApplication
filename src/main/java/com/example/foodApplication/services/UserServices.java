@@ -60,24 +60,34 @@ public class UserServices implements UserDetailsService {
         List<GrantedAuthority> grantedAuthorityList=new ArrayList<>();
         return grantedAuthorityList;
     }
+
     /**
      * Find user from database by email
      * @param email the email of the scoped user
-     * @return the scoped user or an error exception
+     * @return the scoped user STATUS:200  or an error exception STATUS:400
      */
     public User findByEmail(String email) {
        return userRepo.findByEmail(email);
     }
 
+
+    /**
+     *
+     * @param newEmail the updated email
+     * @param newUsername the updated username
+     * @param newPassword the updated password
+     * @param token the token to check the validity
+     * @return A start token and successful STATUS:200 or an error msg in the body STATUS:400
+     */
     public ResponseEntity<?> updateProfile(String newEmail, String newUsername, String newPassword, String token)
     {
         if(!authenticationServices.emailValidate(newEmail))
             throw new InvalidEmailStructure();
         if(!authenticationServices.passwordValidate(newPassword))
             throw new InvalidPasswordStructure();
+
         if(userRepo.findByEmail(newEmail)==null || newEmail.equals(jwtUtils.getUserNameFromJwtToken(token)))
         {
-
             if(jwtUtils.validateJwtToken(token))
             {
                 String oldemail= jwtUtils.getUserNameFromJwtToken(token);
@@ -88,12 +98,11 @@ public class UserServices implements UserDetailsService {
                 userRepo.save(encryptedUser);
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(newEmail, newPassword));
-                String jwt = jwtUtils.generateJwtToken(authentication);
-                return ResponseEntity.ok().header("Authorization", jwt).body("Successfully updated");
+                String newJwt = jwtUtils.generateJwtToken(authentication);
+                return ResponseEntity.ok().header("Authorization", newJwt).body("Successfully updated");
             }else
                 throw new InvalidTokenException();
         }
         throw new TakenEmailException();
-
     }
 }

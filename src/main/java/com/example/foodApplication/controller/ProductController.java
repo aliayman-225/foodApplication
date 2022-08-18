@@ -26,7 +26,7 @@ public class ProductController {
         return productServices.deleteProduct(id,Authorization);
     }
 
-    @RequestMapping(value = "/allProducts")
+    @GetMapping(value = "/allProducts")
     public ResponseEntity<?> showAllProducts(@RequestParam String category, @RequestHeader String Authorization)
     {
         return productServices.showAllProducts(category,Authorization);
