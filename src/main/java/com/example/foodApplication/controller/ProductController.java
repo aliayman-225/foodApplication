@@ -39,6 +39,12 @@ public class ProductController {
         return productServices.showAllFoodProducts();//
     }
 
+    @RequestMapping(value = "/all")
+    public ResponseEntity<?> showAllFoodProducts2()
+    {
+        return productServices.showAllFoodProducts();//
+    }
+
 
 
 
