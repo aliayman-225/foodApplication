@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/Home")
 public class ProductController {
@@ -32,8 +32,8 @@ public class ProductController {
         return productServices.showAllProducts(category,Authorization);
     }
 
-
-    @RequestMapping(value = "/allFoodProducts")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping(value = "/allFoodProducts")
     public ResponseEntity<?> showAllFoodProducts(@RequestHeader String Authorization)
     {
         return productServices.showAllFoodProducts(Authorization);
