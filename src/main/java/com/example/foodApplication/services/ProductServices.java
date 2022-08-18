@@ -91,8 +91,8 @@ public class ProductServices {
     }
 
 
-    public  ResponseEntity<?> showAllFoodProducts() {
-      /*  try
+    public  ResponseEntity<?> showAllFoodProducts(String token) {
+       try
         {
             if(jwtUtils.validateJwtToken(token))
             {
@@ -101,13 +101,11 @@ public class ProductServices {
                 return ResponseEntity.ok().header("Authorization", jwt).body(productRepo.findAll());
             }
 
-        }*/
-        return ResponseEntity.ok().body("hii"+productRepo.findByCategoryIgnoreCase("Pizza"));
-
-        /*catch (Exception e){
+        }
+        catch (Exception e){
             throw new InvalidTokenException();
-        }*/
-      //  throw new InvalidTokenException();
+        }
+       throw new InvalidTokenException();
     }
 
 
