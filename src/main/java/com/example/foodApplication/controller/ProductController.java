@@ -33,6 +33,7 @@ public class ProductController {
     }
 
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value = "/allFoodProducts")
     public ResponseEntity<?> showAllFoodProducts(@RequestHeader String Authorization)
     {
