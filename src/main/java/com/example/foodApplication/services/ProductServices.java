@@ -102,7 +102,7 @@ public class ProductServices {
             }
 
         }*/
-        return ResponseEntity.ok().body("hii"+productRepo.findAll());
+        return ResponseEntity.ok().body("hii"+productRepo.findById(7));
 
         /*catch (Exception e){
             throw new InvalidTokenException();
