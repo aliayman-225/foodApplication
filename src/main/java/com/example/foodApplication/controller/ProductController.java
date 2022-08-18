@@ -39,7 +39,7 @@ public class ProductController {
         return productServices.showAllFoodProducts();//
     }
 
-    @RequestMapping(value = "/all")
+    @PostMapping(value = "/all")
     public ResponseEntity<?> showAllFoodProducts2()
     {
         return productServices.showAllFoodProducts();//
