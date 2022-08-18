@@ -33,7 +33,7 @@ public class ProductController {
     }
 
 
-    @RequestMapping(value = "/allFoodProducts")
+    @RequestMapping(value = "/allFoodProductsssa")
     public ResponseEntity<?> showAllFoodProducts()
     {
         return productServices.showAllFoodProducts();//
