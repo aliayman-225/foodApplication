@@ -64,7 +64,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/Home/register",
             "/Home/Register",
             "/Home/login",
-            "/Home/allFoodProducts"
+            "/Home/all"
             // other public endpoints of your API may be appended to this array
     };
 
