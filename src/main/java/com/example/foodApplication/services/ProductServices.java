@@ -59,7 +59,6 @@ public class ProductServices {
      * @return A new token with new session and a successful msg in the body
      */
     public  ResponseEntity<?>  deleteProduct(Long id,String token) {
-            try{
                 if(jwtUtils.validateJwtToken(token))
                 {
                     String newJwt = jwtUtils.generateJwtTokenFromEmail(jwtUtils.getUserNameFromJwtToken(token));
@@ -68,11 +67,7 @@ public class ProductServices {
                     productRepo.deleteById(id);
                     return ResponseEntity.ok().header("Authorization", newJwt).body("Deleted Successfully");
                 }
-            }
-           catch (Exception e){
-               throw new InvalidTokenException();
-           }
-        throw new InvalidTokenException();
+                throw new InvalidTokenException();
     }
 
 
