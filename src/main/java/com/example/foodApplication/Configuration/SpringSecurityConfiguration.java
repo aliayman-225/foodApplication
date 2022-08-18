@@ -63,7 +63,8 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/swagger-ui/**",
             "/Home/register",
             "/Home/Register",
-            "/Home/login"
+            "/Home/login",
+            "/Home/allFoodProducts"
             // other public endpoints of your API may be appended to this array
     };
 
